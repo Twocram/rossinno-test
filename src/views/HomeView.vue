@@ -42,6 +42,7 @@ import VHeader from '@/components/VHeader.vue'
 import { useUserStore } from '@/stores/user'
 import type { RegisterBody } from '@/types/auth'
 import type { User } from '@/types/user'
+import { getPassword } from '@/utils/hasher'
 import { Button, Column, DataTable, Paginator } from 'primevue'
 import { computed, onMounted, ref } from 'vue'
 
@@ -110,7 +111,7 @@ const deleteUserHandler = async (login: string) => {
 }
 
 const saveUserHandler = async (user: RegisterBody) => {
-  await register(user)
+  await register({ ...user, password: getPassword(user.login, user.password) })
 
   await fetchUsers()
 
